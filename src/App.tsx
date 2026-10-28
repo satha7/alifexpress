@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { WhatsAppInquiryGenerator } from './components/WhatsAppInquiryGenerator';
@@ -10,12 +10,21 @@ import { Reviews } from './components/Reviews';
 import { FAQ } from './components/FAQ';
 import { FloatingContact } from './components/FloatingContact';
 import { Footer } from './components/Footer';
+import { LegalPoliciesModal, PolicyTab } from './components/LegalPoliciesModal';
 
 export default function App() {
+  const [policyModalOpen, setPolicyModalOpen] = useState(false);
+  const [policyTab, setPolicyTab] = useState<PolicyTab>('privacy');
+
+  const handleOpenPolicy = (tab: PolicyTab) => {
+    setPolicyTab(tab);
+    setPolicyModalOpen(true);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-stone-50 text-stone-800 font-sans selection:bg-emerald-700 selection:text-white" dir="rtl">
       {/* Top Navigation */}
-      <Navbar />
+      <Navbar onOpenPolicy={handleOpenPolicy} />
 
       {/* Main Content */}
       <main className="flex-1">
@@ -44,11 +53,18 @@ export default function App() {
         <FAQ />
       </main>
 
-      {/* Footer */}
-      <Footer />
+      {/* Footer with Google Ads policy links & business details */}
+      <Footer onOpenPolicy={handleOpenPolicy} />
 
       {/* Floating WhatsApp and Call Action Buttons (and mobile bottom bar) */}
       <FloatingContact />
+
+      {/* Legal & Policies Modal (Privacy Policy, Terms of Service, Cancellation) */}
+      <LegalPoliciesModal
+        isOpen={policyModalOpen}
+        initialTab={policyTab}
+        onClose={() => setPolicyModalOpen(false)}
+      />
     </div>
   );
 }

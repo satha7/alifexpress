@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { Phone, MessageCircle, Menu, X, Shield, Clock, MapPin } from 'lucide-react';
 import { CONTACT_PHONE, CONTACT_PHONE_DISPLAY, CONTACT_WHATSAPP } from '../data/transportData';
+import { PolicyTab } from './LegalPoliciesModal';
 
-export const Navbar: React.FC = () => {
+interface NavbarProps {
+  onOpenPolicy?: (tab: PolicyTab) => void;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ onOpenPolicy }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -151,6 +156,16 @@ export const Navbar: React.FC = () => {
             >
               الأسئلة الشائعة
             </a>
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenPolicy?.('privacy');
+              }}
+              className="text-right px-3 py-2 rounded-lg hover:bg-stone-50 text-emerald-800 font-bold cursor-pointer"
+            >
+              السياسات والشروط (إعلانات جوجل)
+            </button>
           </div>
 
           <div className="pt-3 border-t border-stone-200 space-y-2.5">

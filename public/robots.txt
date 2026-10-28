@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Googlebot specific directives
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: AdsBot-Google
+Allow: /
+
+Sitemap: https://aleef-express.vercel.app/sitemap.xml
