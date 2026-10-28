@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Send, Phone, MapPin, CheckCircle2, Clock, Sparkles, Copy, Check } from 'lucide-react';
 import { CONTACT_PHONE, CONTACT_PHONE_DISPLAY, CONTACT_WHATSAPP, SAUDI_REGIONS } from '../data/transportData';
+import { trackConversion } from '../utils/analytics';
 
 const ALL_CITIES = Array.from(new Set(SAUDI_REGIONS.flatMap(r => r.cities))).sort((a, b) => a.localeCompare('ar'));
 
@@ -249,6 +250,7 @@ export const WhatsAppInquiryGenerator: React.FC = () => {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackConversion('whatsapp', 'Inquiry Generator WhatsApp')}
                 className="w-full flex items-center justify-center gap-3 bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-stone-950 font-bold py-4 px-6 rounded-2xl text-base shadow-lg shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5"
               >
                 <Send className="w-5 h-5 fill-current" />
@@ -257,6 +259,7 @@ export const WhatsAppInquiryGenerator: React.FC = () => {
 
               <a
                 href={`tel:${CONTACT_PHONE}`}
+                onClick={() => trackConversion('phone', 'Inquiry Generator Phone')}
                 className="w-full flex items-center justify-center gap-3 bg-stone-800/90 hover:bg-stone-700 border border-stone-600 text-white font-semibold py-3.5 px-6 rounded-2xl text-sm transition-all"
               >
                 <Phone className="w-4 h-4 text-emerald-400" />

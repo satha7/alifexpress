@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Phone, MessageCircle, X } from 'lucide-react';
 import { CONTACT_PHONE, CONTACT_PHONE_DISPLAY, CONTACT_WHATSAPP } from '../data/transportData';
+import { trackConversion } from '../utils/analytics';
 
 export const FloatingContact: React.FC = () => {
   const [showTooltip, setShowTooltip] = useState(true);
@@ -42,6 +43,7 @@ export const FloatingContact: React.FC = () => {
           href={`https://wa.me/${CONTACT_WHATSAPP}?text=${defaultWhatsappText}`}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackConversion('whatsapp', 'Floating Desktop Button')}
           className="group relative flex items-center gap-3 bg-[#25D366] hover:bg-[#20bd5a] text-white px-4 py-3.5 rounded-full shadow-2xl shadow-emerald-900/30 transition-all duration-300 hover:scale-105 active:scale-95"
           aria-label="محادثة واتساب سريعة للحجز"
         >
@@ -61,6 +63,7 @@ export const FloatingContact: React.FC = () => {
         {/* Phone Floating Button */}
         <a
           href={`tel:${CONTACT_PHONE}`}
+          onClick={() => trackConversion('phone', 'Floating Desktop Button')}
           className="group relative flex items-center gap-3 bg-stone-900 hover:bg-stone-800 text-white px-4 py-3 rounded-full shadow-xl shadow-stone-900/40 border border-stone-700/60 transition-all duration-300 hover:scale-105 active:scale-95"
           aria-label="اتصال هاتفي مباشر"
         >
@@ -79,6 +82,7 @@ export const FloatingContact: React.FC = () => {
           href={`https://wa.me/${CONTACT_WHATSAPP}?text=${defaultWhatsappText}`}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackConversion('whatsapp', 'Floating Mobile Bar')}
           className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] active:bg-[#1fae53] text-white py-3 px-3 rounded-xl font-bold text-sm shadow-md"
         >
           <MessageCircle className="w-5 h-5 fill-current" />
@@ -88,6 +92,7 @@ export const FloatingContact: React.FC = () => {
         {/* Call Button */}
         <a
           href={`tel:${CONTACT_PHONE}`}
+          onClick={() => trackConversion('phone', 'Floating Mobile Bar')}
           className="flex-1 flex items-center justify-center gap-2 bg-stone-900 active:bg-stone-800 text-white py-3 px-3 rounded-xl font-bold text-sm shadow-md"
         >
           <Phone className="w-4 h-4 text-emerald-400 fill-current" />

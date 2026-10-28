@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Phone, MessageCircle, Menu, X, Shield, Clock, MapPin } from 'lucide-react';
 import { CONTACT_PHONE, CONTACT_PHONE_DISPLAY, CONTACT_WHATSAPP } from '../data/transportData';
 import { PolicyTab } from './LegalPoliciesModal';
+import { trackConversion } from '../utils/analytics';
 
 interface NavbarProps {
   onOpenPolicy?: (tab: PolicyTab) => void;
@@ -79,6 +80,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPolicy }) => {
           <div className="hidden sm:flex items-center gap-3">
             <a
               href={`tel:${CONTACT_PHONE}`}
+              onClick={() => trackConversion('phone', 'Navbar Call Button')}
               className="flex items-center gap-2 text-stone-800 hover:text-emerald-800 font-bold text-sm px-3.5 py-2.5 rounded-xl hover:bg-stone-100 transition-colors"
             >
               <Phone className="w-4 h-4 text-emerald-600" />
@@ -89,6 +91,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPolicy }) => {
               href={`https://wa.me/${CONTACT_WHATSAPP}?text=${encodeURIComponent('السلام عليكم، أرغب بحجز نقل لأليفي بين مدن المملكة.')}`}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackConversion('whatsapp', 'Navbar WhatsApp Button')}
               className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-md shadow-emerald-600/20 transition-all hover:shadow-lg hover:-translate-y-0.5"
             >
               <MessageCircle className="w-4 h-4 fill-current" />
@@ -173,6 +176,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPolicy }) => {
               href={`https://wa.me/${CONTACT_WHATSAPP}?text=${encodeURIComponent('السلام عليكم، أرغب بحجز نقل لأليفي بين مدن المملكة.')}`}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                trackConversion('whatsapp', 'Navbar Mobile Drawer WhatsApp');
+              }}
               className="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white font-bold py-3 px-4 rounded-xl shadow-sm text-sm"
             >
               <MessageCircle className="w-5 h-5 fill-current" />
@@ -181,6 +188,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPolicy }) => {
 
             <a
               href={`tel:${CONTACT_PHONE}`}
+              onClick={() => {
+                setMobileMenuOpen(false);
+                trackConversion('phone', 'Navbar Mobile Drawer Phone');
+              }}
               className="w-full flex items-center justify-center gap-2 bg-stone-900 text-white font-bold py-3 px-4 rounded-xl text-sm"
             >
               <Phone className="w-4 h-4 text-emerald-400" />

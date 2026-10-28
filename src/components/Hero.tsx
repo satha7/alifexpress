@@ -1,6 +1,7 @@
 import React from 'react';
 import { MessageCircle, Phone, ArrowDown, ShieldCheck, Zap, ThermometerSnowflake, Video, HeartHandshake, CheckCircle } from 'lucide-react';
 import { CONTACT_PHONE, CONTACT_PHONE_DISPLAY, CONTACT_WHATSAPP } from '../data/transportData';
+import { trackConversion } from '../utils/analytics';
 
 export const Hero: React.FC = () => {
   const defaultWhatsappUrl = `https://wa.me/${CONTACT_WHATSAPP}?text=${encodeURIComponent(
@@ -57,6 +58,7 @@ export const Hero: React.FC = () => {
                 href={defaultWhatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackConversion('whatsapp', 'Hero Primary Button')}
                 className="flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20bd5a] text-stone-950 font-extrabold px-8 py-4 rounded-2xl text-base shadow-xl shadow-emerald-950/50 transition-all hover:scale-[1.02] active:scale-[0.98]"
               >
                 <MessageCircle className="w-5 h-5 fill-current" />
@@ -65,6 +67,7 @@ export const Hero: React.FC = () => {
 
               <a
                 href={`tel:${CONTACT_PHONE}`}
+                onClick={() => trackConversion('phone', 'Hero Call Button')}
                 className="flex items-center justify-center gap-3 bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold px-7 py-4 rounded-2xl text-base backdrop-blur-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
               >
                 <Phone className="w-5 h-5 text-emerald-400" />
