@@ -32,13 +32,13 @@ export const Hero: React.FC = () => {
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.25] text-white">
               نقل سريع وآمن لحيواناتك الأليفة{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-l from-emerald-400 to-amber-300">
-                بين كافة مدن المملكة
+                بين الرياض والغربية والشرقية والقصيم
               </span>
             </h1>
 
             {/* Sub-headline */}
             <p className="text-base sm:text-xl text-stone-300 font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              خدمة توصيل متخصصة وسريعة من باب بيتك إلى وجهتك. مركبات مجهزة بأحدث أنظمة التكييف والراحة، رعاية خاصة للطيور الحساسة والقطط، ومتابعة مصورة بالفيديو خطوة بخطوة.
+              خدمة توصيل متخصصة وسريعة من الباب إلى الباب. رحلات يومية مكوكية مباشرة تربط: <span className="text-emerald-300 font-bold">الرياض، الخرج، جدة، مكة المكرمة، المدينة المنورة، الطائف، الدمام، الخبر، الأحساء، الهفوف، الجبيل، القطيف، والقصيم (بريدة، عنيزة، الرس)</span> بسيارات مكيفة وتوثيق فيديو مستمر.
             </p>
 
             {/* The Explicit Direct Booking Guidance: Call or WhatsApp */}
@@ -79,7 +79,7 @@ export const Hero: React.FC = () => {
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-4 text-xs sm:text-sm text-stone-300">
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>تغطية كل مدن المملكة</span>
+                <span>رحلات يومية مباشرة</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />

@@ -17,8 +17,8 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPolicy }) => {
           <div className="flex items-center gap-3">
             <MapPin className="w-5 h-5 text-emerald-400 shrink-0" />
             <div>
-              <span className="font-bold text-white block">المقر الرئيسي والتغطية:</span>
-              <span>الرياض، المملكة العربية السعودية — أسطول يغطي كافة المدن 🇸🇦</span>
+              <span className="font-bold text-white block">نطاق التغطية والرحلات:</span>
+              <span>رحلات يومية بين: الرياض، الخرج، جدة، مكة، الطائف، المدينة، الشرقية، والقصيم</span>
             </div>
           </div>
 
@@ -51,7 +51,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPolicy }) => {
             </div>
 
             <p className="text-sm text-stone-400 leading-relaxed">
-              الخدمة الرائدة والمعتمدة في نقل الحيوانات الأليفة (القطط، الطيور وببغاوات الزينة، والحيوانات الأليفة) بين كافة مدن ومحافظات المملكة العربية السعودية بسيارات مكيفة ومجهزة ومتابعة دورية بالفيديو عبر الواتساب.
+              الخدمة الرائدة والمعتمدة في نقل الحيوانات الأليفة (القطط، والطيور وببغاوات الزينة) حصرياً بين: الرياض، الخرج، جدة، مكة المكرمة، المدينة المنورة، الطائف، الدمام، الخبر، الأحساء، الهفوف، الجبيل، القطيف، والقصيم (بريدة، عنيزة، الرس) بسيارات مكيفة ومجهزة ومتابعة دورية بالفيديو عبر الواتساب.
             </p>
 
             <div className="flex items-center gap-2 text-xs text-emerald-400 font-semibold pt-1">

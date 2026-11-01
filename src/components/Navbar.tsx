@@ -20,7 +20,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPolicy }) => {
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             <span className="font-medium">
-              تغطية يومية شاملة لجميع مدن ومحافظات المملكة 🇸🇦 | سرعة في التوصيل وتكييف مستمر 24/7
+              رحلات يومية مباشرة منها وعليها: الرياض والخرج ↔ جدة والغربية ↔ الدمام والشرقية ↔ القصيم 🇸🇦 | تكييف وسرعة 24/7
             </span>
           </div>
           <div className="hidden md:flex items-center gap-6 text-[11px] text-emerald-300">

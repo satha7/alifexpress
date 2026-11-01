@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Send, Phone, MapPin, CheckCircle2, Clock, Sparkles, Copy, Check } from 'lucide-react';
-import { CONTACT_PHONE, CONTACT_PHONE_DISPLAY, CONTACT_WHATSAPP, SAUDI_REGIONS } from '../data/transportData';
+import { Send, Phone, MapPin, CheckCircle2, Clock, Sparkles, Copy, Check, ArrowRightLeft, Star } from 'lucide-react';
+import { CONTACT_PHONE, CONTACT_PHONE_DISPLAY, CONTACT_WHATSAPP, PRIMARY_FOCUS_CITIES } from '../data/transportData';
 import { trackConversion } from '../utils/analytics';
 
-const ALL_CITIES = Array.from(new Set(SAUDI_REGIONS.flatMap(r => r.cities))).sort((a, b) => a.localeCompare('ar'));
+const CITIES_LIST = PRIMARY_FOCUS_CITIES;
 
 export const WhatsAppInquiryGenerator: React.FC = () => {
   const [fromCity, setFromCity] = useState('الرياض');
@@ -14,17 +14,95 @@ export const WhatsAppInquiryGenerator: React.FC = () => {
   const [cageOption, setCageOption] = useState('القفص متوفر لدي');
   const [copied, setCopied] = useState(false);
 
-  // Approximate travel duration estimation between popular cities
+  // Accurate duration estimation focusing on the core 16 cities and Saudi network
   const getEstimatedDuration = (from: string, to: string) => {
-    if (from === to) return 'توصيل محلي داخل المدينة (خلال 2-4 ساعات)';
-    if ((from === 'الرياض' && to === 'جدة') || (from === 'جدة' && to === 'الرياض')) return '10 - 12 ساعة (رحلة يومية مباشرة)';
-    if ((from === 'الرياض' && to.includes('الدمام')) || (to === 'الرياض' && from.includes('الدمام'))) return '3.5 - 4.5 ساعة (توصيل فائق السرعة)';
-    if ((from === 'جدة' && to === 'مكة المكرمة') || (to === 'جدة' && from === 'مكة المكرمة')) return 'ساعة واحدة فقط';
-    if ((from === 'جدة' && to === 'المدينة المنورة') || (to === 'جدة' && from === 'المدينة المنورة')) return '4 - 5 ساعات';
-    if ((from === 'الرياض' && to.includes('القصيم')) || (to === 'الرياض' && from.includes('القصيم'))) return '3 - 4 ساعات';
-    if (from.includes('أبها') || to.includes('أبها') || from.includes('جازان') || to.includes('جازان')) return 'خلال 14 - 24 ساعة (مع فترات راحة وتكييف مستمر)';
-    if (from.includes('تبوك') || to.includes('تبوك') || from.includes('حائل') || to.includes('حائل')) return 'خلال 12 - 20 ساعة';
-    return 'خلال 12 - 24 ساعة كحد أقصى';
+    if (from === to) return 'توصيل محلي داخل المدينة (خلال 2 - 4 ساعات)';
+
+    // Riyadh & Al-Kharj
+    if ((from === 'الرياض' && to === 'الخرج') || (from === 'الخرج' && to === 'الرياض')) {
+      return 'ساعة واحدة فقط (توصيل فوري ومباشر)';
+    }
+
+    // Western Corridor
+    const westernGroup = ['جدة', 'مكة المكرمة', 'المدينة المنورة', 'الطائف'];
+    if (westernGroup.includes(from) && westernGroup.includes(to)) {
+      if ((from === 'جدة' && to === 'مكة المكرمة') || (from === 'مكة المكرمة' && to === 'جدة')) return 'ساعة واحدة فقط (توصيل فوري)';
+      if (from === 'الطائف' || to === 'الطائف') return '1.5 - 2 ساعة (مركبات مكيفة للمرتفعات)';
+      if (from === 'المدينة المنورة' || to === 'المدينة المنورة') return '4 - 5 ساعات (رحلات يومية مباشرة)';
+      return '1 - 3 ساعات (توصيل سريع)';
+    }
+
+    // Eastern Corridor
+    const easternGroup = ['الدمام', 'الخبر', 'الجبيل', 'القطيف', 'الأحساء', 'الهفوف'];
+    if (easternGroup.includes(from) && easternGroup.includes(to)) {
+      if ((from === 'الأحساء' || from === 'الهفوف') || (to === 'الأحساء' || to === 'الهفوف')) {
+        return '1.5 - 2 ساعة (رحلات يومية متواصلة)';
+      }
+      return '45 دقيقة إلى ساعة واحدة (توصيل فوري بين مدن الشرقية)';
+    }
+
+    // Qassim Corridor
+    const qassimGroup = ['القصيم', 'بريدة', 'عنيزة', 'الرس'];
+    if (qassimGroup.includes(from) && qassimGroup.includes(to)) {
+      return '30 - 45 دقيقة (توصيل فوري بين مدن ومحافظات القصيم)';
+    }
+
+    // Riyadh/Kharj <-> Eastern
+    if (
+      (['الرياض', 'الخرج'].includes(from) && easternGroup.includes(to)) ||
+      (easternGroup.includes(from) && ['الرياض', 'الخرج'].includes(to))
+    ) {
+      return '3.5 - 4 ساعات (توصيل فائق السرعة)';
+    }
+
+    // Riyadh/Kharj <-> Qassim
+    if (
+      (['الرياض', 'الخرج'].includes(from) && qassimGroup.includes(to)) ||
+      (qassimGroup.includes(from) && ['الرياض', 'الخرج'].includes(to))
+    ) {
+      return '3 - 4 ساعات (رحلات مكوكية يومية)';
+    }
+
+    // Riyadh/Kharj <-> Western
+    if (
+      (['الرياض', 'الخرج'].includes(from) && westernGroup.includes(to)) ||
+      (westernGroup.includes(from) && ['الرياض', 'الخرج'].includes(to))
+    ) {
+      return '10 - 12 ساعة (رحلة يومية مباشرة / نفس اليوم أو صباح الغد)';
+    }
+
+    // Qassim <-> Western
+    if (
+      (qassimGroup.includes(from) && westernGroup.includes(to)) ||
+      (westernGroup.includes(from) && qassimGroup.includes(to))
+    ) {
+      if (from === 'المدينة المنورة' || to === 'المدينة المنورة') return '4 - 5 ساعات (مسار سريع مباشر)';
+      return '7 - 9 ساعات (رحلات منتظمة ومجهزة)';
+    }
+
+    // Qassim <-> Eastern
+    if (
+      (qassimGroup.includes(from) && easternGroup.includes(to)) ||
+      (easternGroup.includes(from) && qassimGroup.includes(to))
+    ) {
+      return '5 - 6 ساعات (توصيل مباشر سريع)';
+    }
+
+    // Eastern <-> Western
+    if (
+      (easternGroup.includes(from) && westernGroup.includes(to)) ||
+      (westernGroup.includes(from) && easternGroup.includes(to))
+    ) {
+      return '14 - 16 ساعة (تكييف مستمر ومتابعة فيديو 24/7)';
+    }
+
+    return 'خلال 12 - 24 ساعة كحد أقصى (تكييف مستمر واستلام من الباب)';
+  };
+
+  const handleSwapCities = () => {
+    const temp = fromCity;
+    setFromCity(toCity);
+    setToCity(temp);
   };
 
   const generatedMessage = `السلام عليكم ورحمة الله وبركاته،
@@ -74,35 +152,75 @@ export const WhatsAppInquiryGenerator: React.FC = () => {
             </h3>
 
             {/* From & To Cities */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-bold text-stone-700 mb-2">
-                  مدينة الاستلام (من)
-                </label>
-                <select
-                  value={fromCity}
-                  onChange={(e) => setFromCity(e.target.value)}
-                  className="w-full bg-stone-50 border border-stone-300 rounded-xl px-4 py-3 text-stone-900 font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-shadow"
-                >
-                  {ALL_CITIES.map((c) => (
-                    <option key={`from-${c}`} value={c}>{c}</option>
-                  ))}
-                </select>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end">
+                <div className="sm:col-span-5">
+                  <label className="block text-sm font-bold text-stone-700 mb-2 flex items-center justify-between">
+                    <span>مدينة الاستلام (من)</span>
+                    <span className="text-[11px] font-bold text-emerald-800 bg-emerald-100/70 px-2 py-0.5 rounded-md">من الباب</span>
+                  </label>
+                  <select
+                    value={fromCity}
+                    onChange={(e) => setFromCity(e.target.value)}
+                    className="w-full bg-stone-50 border border-stone-300 rounded-xl px-4 py-3 text-stone-900 font-bold focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-shadow"
+                  >
+                    {CITIES_LIST.map((c) => (
+                      <option key={`from-${c}`} value={c}>{c}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Swap button */}
+                <div className="sm:col-span-2 flex justify-center pb-1">
+                  <button
+                    type="button"
+                    onClick={handleSwapCities}
+                    title="تبديل اتجاه الرحلة"
+                    className="p-3 rounded-xl bg-stone-100 hover:bg-emerald-100 hover:text-emerald-800 text-stone-600 transition-colors border border-stone-200 cursor-pointer flex items-center gap-1.5 text-xs font-semibold"
+                  >
+                    <ArrowRightLeft className="w-4 h-4" />
+                    <span className="sm:hidden">تبديل الاتجاه</span>
+                  </button>
+                </div>
+
+                <div className="sm:col-span-5">
+                  <label className="block text-sm font-bold text-stone-700 mb-2 flex items-center justify-between">
+                    <span>مدينة التسليم (إلى)</span>
+                    <span className="text-[11px] font-bold text-emerald-800 bg-emerald-100/70 px-2 py-0.5 rounded-md">إلى الباب</span>
+                  </label>
+                  <select
+                    value={toCity}
+                    onChange={(e) => setToCity(e.target.value)}
+                    className="w-full bg-stone-50 border border-stone-300 rounded-xl px-4 py-3 text-stone-900 font-bold focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-shadow"
+                  >
+                    {CITIES_LIST.map((c) => (
+                      <option key={`to-${c}`} value={c}>{c}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-bold text-stone-700 mb-2">
-                  مدينة التسليم (إلى)
-                </label>
-                <select
-                  value={toCity}
-                  onChange={(e) => setToCity(e.target.value)}
-                  className="w-full bg-stone-50 border border-stone-300 rounded-xl px-4 py-3 text-stone-900 font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-shadow"
-                >
-                  {ALL_CITIES.map((c) => (
-                    <option key={`to-${c}`} value={c}>{c}</option>
+              {/* Quick Destination Chips for Priority Cities */}
+              <div className="pt-1">
+                <span className="text-xs text-stone-500 font-semibold block mb-2">
+                  وجهات الوصول الأكثر طلباً (اضغط للتحديد السريع):
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {PRIMARY_FOCUS_CITIES.map((city) => (
+                    <button
+                      key={`quick-${city}`}
+                      type="button"
+                      onClick={() => setToCity(city)}
+                      className={`text-xs px-2.5 py-1 rounded-lg border transition-all cursor-pointer ${
+                        toCity === city
+                          ? 'bg-emerald-800 text-white border-emerald-800 font-bold shadow-xs'
+                          : 'bg-stone-50 hover:bg-stone-200 text-stone-700 border-stone-200'
+                      }`}
+                    >
+                      {city}
+                    </button>
                   ))}
-                </select>
+                </div>
               </div>
             </div>
 
